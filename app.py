@@ -3,11 +3,12 @@ from io import BytesIO
 from flask import Flask, redirect, render_template, request, send_file, url_for
 from openpyxl.writer.excel import save_virtual_workbook
 
+from config import getSecretKey
 from forms import ResultsForm
 from scraper import generateRollNos, toExcel
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'ab4d360b39c62652d5dceb5c8888abb87c2c9598c27f'
+app.config['SECRET_KEY'] = getSecretKey()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -30,4 +31,4 @@ def home():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
