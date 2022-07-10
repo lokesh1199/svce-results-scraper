@@ -12,6 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 from scraper import download_results
+import threading
 
 
 class Ui_MainWindow(object):
@@ -111,7 +112,7 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Lokesh"))
         self.message.setText(_translate("MainWindow", ""))
     
-    
+
     def click(self):
         if self.downloading:
             return
@@ -136,12 +137,16 @@ class Ui_MainWindow(object):
         
         if '.' not in filename:
             filename += '.xlsx'
-        
+
+        thread = threading.Thread(target=lambda: self.process(link, start, end, filename))
+        thread.start()
+
+    def process(self, link, start, end, filename):
         self.download = True
         self.message.setText('downloading...')
 
         isDone = download_results(link, start, end, filename)
-        
+
         if isDone:
             self.message.setText('downloaded sucessfully')
         else:
