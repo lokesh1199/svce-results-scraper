@@ -10,7 +10,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 from scraper import download_results
 import threading
 
@@ -69,28 +68,18 @@ class Ui_MainWindow(object):
         self.download.setIcon(icon)
         self.download.setFlat(False)
         self.download.setObjectName("download")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(304, 531, 81, 31))
-        font = QtGui.QFont()
-        font.setFamily("Cantarell")
-        font.setPointSize(12)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(370, 539, 161, 17))
-        font = QtGui.QFont()
-        font.setFamily("Cantarell")
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
         self.message = QtWidgets.QLabel(self.centralwidget)
         self.message.setGeometry(QtCore.QRect(250, 460, 301, 20))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.message.setFont(font)
         self.message.setObjectName("message")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(320, 530, 241, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -108,10 +97,8 @@ class Ui_MainWindow(object):
         self.start_label.setText(_translate("MainWindow", "Start Roll number"))
         self.end_label.setText(_translate("MainWindow", "End Roll number"))
         self.download.setText(_translate("MainWindow", "Download"))
-        self.label.setText(_translate("MainWindow", "Made by"))
-        self.label_2.setText(_translate("MainWindow", "Lokesh"))
         self.message.setText(_translate("MainWindow", ""))
-    
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p>Made by <span style=\" font-weight:600;\">Lokesh</span></p></body></html>"))
 
     def click(self):
         if self.downloading:
@@ -120,8 +107,8 @@ class Ui_MainWindow(object):
         self.message.setText('')
         
         link = self.link.text().strip()
-        start = self.start.text().strip().lower()
-        end = self.end.text().strip().lower()
+        start = self.start.text().strip().upper()
+        end = self.end.text().strip().upper()
         print(link, start, end)
 
         if link == '':

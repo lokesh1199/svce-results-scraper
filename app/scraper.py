@@ -67,9 +67,9 @@ def getResultsRows(resultsID, rollno):
     try:
         html = getResults(resultsID, rollno)
         rows = parseHTML(html)
-    except Exception as e:
-        print(e)
-        return []
+    except:
+        print(f'{rollno} - not found')
+        return None
 
     return rows
 
@@ -83,6 +83,9 @@ def toExcel(resultsID, rollnos, filename):
         results = executor.map(getResultsRows, repeat(resultsID), rollnos)
 
     for rows in results:
+        if rows is None:
+            continue
+        
         for row in rows:
             ws.append(row)
         ws.append([])
