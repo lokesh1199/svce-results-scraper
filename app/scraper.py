@@ -33,13 +33,16 @@ def getResults(resultsID, rollno):
     return res.text
 
 
-def toExcel(resultsID, rollnos):
+def toExcel(resultsID, rollnos, filename):
     wb = openpyxl.Workbook()
     ws = wb.worksheets[0]
 
     for rollno in rollnos:
-        html = getResults(resultsID, rollno)
-        rows = parseHTML(html)
+        try:
+            html = getResults(resultsID, rollno)
+            rows = parseHTML(html)
+        except:
+            continue
 
         for row in rows:
             ws.append(row)
@@ -47,7 +50,8 @@ def toExcel(resultsID, rollnos):
         ws.append([])
         ws.append([])
 
-    return wb
+    wb.save(filename)
+    return True
 
 
 def parseHTML(html):
@@ -77,6 +81,12 @@ def parseHTML(html):
     res[-1].insert(0, 'Total Credits')
 
     return res
+
+def download_results(link, start, end, filename):
+    resultsID = link.split('/')[-1]
+    rollnos = generateRollNos(start, end)
+
+    return toExcel(resultsID, rollnos, filename)
 
 
 def main():
