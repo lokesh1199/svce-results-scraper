@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import openpyxl
 
+from concurrent.futures import ThreadPoolExecutor
+from itertools import repeat
 
 def generateRollNos(start, end):
     base = start[:-2]
@@ -32,28 +34,6 @@ def getResults(resultsID, rollno):
 
     return res.text
 
-
-def toExcel(resultsID, rollnos, filename):
-    wb = openpyxl.Workbook()
-    ws = wb.worksheets[0]
-
-    for rollno in rollnos:
-        try:
-            html = getResults(resultsID, rollno)
-            rows = parseHTML(html)
-        except:
-            continue
-
-        for row in rows:
-            ws.append(row)
-
-        ws.append([])
-        ws.append([])
-
-    wb.save(filename)
-    return True
-
-
 def parseHTML(html):
     soup = BeautifulSoup(html, 'lxml')
     tables = soup.findAll('table')
@@ -81,6 +61,36 @@ def parseHTML(html):
     res[-1].insert(0, 'Total Credits')
 
     return res
+
+
+def getResultsRows(resultsID, rollno):
+    try:
+        html = getResults(resultsID, rollno)
+        rows = parseHTML(html)
+    except Exception as e:
+        print(e)
+        return []
+
+    return rows
+
+
+def toExcel(resultsID, rollnos, filename):
+    wb = openpyxl.Workbook()
+    ws = wb.worksheets[0]
+    rollnos = list(rollnos)
+
+    with ThreadPoolExecutor() as executor:
+        results = executor.map(getResultsRows, repeat(resultsID), rollnos)
+
+    for rows in results:
+        for row in rows:
+            ws.append(row)
+        ws.append([])
+        ws.append([])
+
+    wb.save(filename)
+    return True
+
 
 def download_results(link, start, end, filename):
     resultsID = link.split('/')[-1]
