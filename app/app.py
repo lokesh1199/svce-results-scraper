@@ -47,7 +47,7 @@ class Ui_MainWindow(object):
         self.link_label.setFont(font)
         self.link_label.setObjectName("link_label")
         self.start_label = QtWidgets.QLabel(self.centralwidget)
-        self.start_label.setGeometry(QtCore.QRect(250, 170, 201, 41))
+        self.start_label.setGeometry(QtCore.QRect(250, 170, 241, 41))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.start_label.setFont(font)
