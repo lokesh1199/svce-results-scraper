@@ -108,7 +108,7 @@ def main():
     start = input('Enter starting roll number: ').strip().upper()
     end = input('Enter ending roll no: ').strip().upper()
 
-    filename = input('Enter file name to save: ').strip()
+    filename = input('Enter file name to save: ').strip() + '.xlsx'
 
     rollnos = generateRollNos(start, end)
     toExcel(resultsID, rollnos, filename)
